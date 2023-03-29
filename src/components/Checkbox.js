@@ -3,10 +3,6 @@ const Checkbox = (props) => {
     let checkedValue = (props.status);
 
     const stateHandler = () => {
-        console.log(props.id);
-        console.log(props.status);
-        console.log(checkedValue);
-
         props.onChangeStatus(props.id, props.status)
     }
 

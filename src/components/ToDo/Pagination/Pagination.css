@@ -1,3 +1,11 @@
+.pagination {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .pagination-container {
     width: 95%;
     height: 8%;
@@ -31,4 +39,9 @@
     background-color: #f8e8e5;
     border-radius: 5px;
     margin: 2px;
+}
+
+.number {
+    cursor: auto;
+    border: none;
 }

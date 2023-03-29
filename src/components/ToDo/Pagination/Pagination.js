@@ -1,33 +1,36 @@
+import './Pagination.css'
 import { useState } from "react";
 
 const Pagination = (props) => {
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(props.currentPage);
 
     const nextPage = () => {
-        if (currentPage !== props.totalPages) {
-            setCurrentPage(currentPage + 1);
-            props.pageChangeHandler(currentPage + 1);
-            return;
+        if (props.currentPage !== props.numberOfPages) {
+            setCurrentPage(props.currentPage + 1);
+            props.changePageHandler(props.currentPage + 1);
+        } else {
+            props.changePageHandler(props.currentPage);
         }
-        props.pageChangeHandler(currentPage);
-    }
+    };
 
     const prevPage = () => {
-        if (currentPage !== 1) {
-            setCurrentPage(currentPage - 1);
-            props.pageChangeHandler(currentPage + 1);
-            return;
+        if (props.currentPage !== 1) {
+            setCurrentPage(props.currentPage - 1);
+            props.changePageHandler(props.currentPage - 1);
+        } else {
+            props.changePageHandler(props.currentPage);
         }
-        props.pageChangeHandler(currentPage);
     };
 
     return (
         <div className="pagination">
-            <button className={currentPage !== 1 ? "button" : "button-inv"} onClick={prevPage}></button>
-                <span className={currentPage !== 1 ? "sidepage-left" : "sidepage-left-inv"}>{currentPage - 1}...</span>
-                <span className="page">{currentPage}</span>
-                <span className={currentPage !== props.totalPages ? "sidepage-right" : "sidepage-right-inv"}>...{currentPage + 1}</span>
-            <button className={currentPage !== props.totalPages ? "button" : "button-inv"} onClick={nextPage}></button>
+            <div className="previous-page-button-container">
+                <button disabled={props.currentPage === 1 ? true : false}  onClick={prevPage}>←</button>
+            </div>
+            Number of pages: {props.numberOfPages}
+            <div className="next-page-button-container">
+                <button disabled={props.currentPage === props.numberOfPages ? true : false} onClick={nextPage}>→</button>
+            </div>
         </div>
     );
 };

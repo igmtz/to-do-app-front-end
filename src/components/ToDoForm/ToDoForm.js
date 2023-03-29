@@ -5,7 +5,7 @@ import { updateToDo, addToDo } from "../../service/ToDoService/ToDoService";
 function ToDoForm(props) {
     const [name, setName] = useState(props.toDoToEdit != null ? props.toDoToEdit.name : "");
     const [priority, setPriority] = useState(props.toDoToEdit != null ? props.toDoToEdit.priority : "");
-    const [dueDate, setDueDate] = useState(props.toDoToEdit != null ? props.toDoToEdit.dueDate : null);
+    const [dueDate, setDueDate] = useState(props.toDoToEdit != null ? props.toDoToEdit.dueDate : "");
 
     const changeNameHandler = (event) => {
         setName(event.target.value);
@@ -23,24 +23,17 @@ function ToDoForm(props) {
         event.preventDefault();
 
         if (props.toDoToEdit != null) {
-            console.log("Updated")
             updateToDo(props.toDoToEdit.id, {name, priority, dueDate}).then(response => {
-                console.log(response);
                 props.changeKey();
             });
         } else {
-            console.log("Created")
             addToDo({name, priority, dueDate}).then(response => {
-                console.log(response);
                 props.changeKey();
             });
         }
 
         props.closeForm();
     };
-
-    
-
 
     return (
         <div className="form-box">

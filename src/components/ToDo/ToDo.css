@@ -66,7 +66,7 @@
     margin-right: 5px;
 }
 
-.list-container .head-name {
+.list-container-no-background .head-name, .list-container-red .head-name, .list-container-yellow .head-name, .list-container-green .head-name {
     display: flex;
     align-items: center;
     padding-left: 5px;
@@ -97,8 +97,35 @@
     align-items: center;
 }
 
-.list-container {
+.list-container-no-background {
+    background-color: #f6f8fa8e;
+    height: 29px;
+    margin: 2px;
+    list-style-type: none;
+    border-radius: 5px;
+    display: flex;
+}
+
+.list-container-red {
     background-color: #ff22008e;
+    height: 29px;
+    margin: 2px;
+    list-style-type: none;
+    border-radius: 5px;
+    display: flex;
+}
+
+.list-container-yellow {
+    background-color: #f3da3b8e;
+    height: 29px;
+    margin: 2px;
+    list-style-type: none;
+    border-radius: 5px;
+    display: flex;
+}
+
+.list-container-green {
+    background-color: #b0ea878e;
     height: 29px;
     margin: 2px;
     list-style-type: none;
@@ -112,24 +139,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.pagination-container a {
-    color: black;
-    float: left;
-    padding: 8px 16px;
-    text-decoration: none;
-}
-
-.pagination-container a.active {
-    background-color: #000000;
-    border-radius: 7px;
-    color: white;
-}
-
-.pagination-container a:hover:not(.active) {
-    background-color: #ddd;
-    border-radius: 7px;
 }
 
 .action-button {
@@ -162,4 +171,10 @@
     padding-left: 5px;
 }
 
+.name-done{
+    text-decoration: line-through;
+}
 
+.name-undone {
+    text-decoration: none;
+}

@@ -8,6 +8,10 @@ export const getToDoStats = async () => {
     return fetch(`${baseUrl}/getStats`).then((response) => response.json());
 }
 
+export const getToDosFilteredAndSortedWithPagination = async (name, priority, flag, priorityOrder, dateOrder, pageNumber) => {
+    return fetch(`${baseUrl}/getToDosFilteredAndSorted?name=${name}&priority=${priority}&doneUnDoneFlag=${flag}&priorityOrder=${priorityOrder}&dateOrder=${dateOrder}&pageNumber=${pageNumber}`).then((response) => response.json())
+}
+
 export const addToDo = async (toDo) => {
     return await fetch(`${baseUrl}/addToDo`,{
         method: "POST",

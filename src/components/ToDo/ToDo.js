@@ -1,14 +1,19 @@
 import './ToDo.css'
 import { deleteToDo, markToDoAsDone, markToDoAsUndone } from '../../service/ToDoService/ToDoService';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ToDoForm from '../ToDoForm/ToDoForm';
 import Checkbox from '../Checkbox';
+import Pagination from './Pagination/Pagination';
 
 function ToDo(props) {
     const [showForm, setShowForm] = useState(false);
     const [toDoToEdit, setToDoToEdit] = useState("");
-    const [priorityOrder, setPriorityOrder] = useState("no");
-    const [dateOrder, setDateOrder] = useState("no")
+    const [priorityOrder, setPriorityOrder] = useState("default");
+    const [dateOrder, setDateOrder] = useState("default");
+
+    useEffect(() => {
+        sortingHandler(priorityOrder, dateOrder);
+    }, [priorityOrder, dateOrder]);
 
     const addToDoHandler = () => {
         setToDoToEdit(null);
@@ -22,49 +27,37 @@ function ToDo(props) {
 
     const deleteToDoHandler = (id) => {
         deleteToDo(id).then(response => {
-            console.log(response);
             props.changeKey();
-        });    
-        console.log(id + "Deleted");
+        });
     };
 
     const changeStatusHandler = (id, status) => {
-
-        console.log(status)
         
         if(!status) {
             markToDoAsDone(id).then(response => {
-                console.log("Done");
                 props.changeKey();
                 props.getStatsHandler();
                 
             })
         } else if (status) {
             markToDoAsUndone(id).then(response => {
-                console.log("Undone");
                 props.changeKey();
                 props.getStatsHandler();
             });
         };
         
-    }
+    };
 
     const priorityOrderChangeHandler = (event) => {
         setPriorityOrder(event.target.value);
-        console.log(priorityOrder);
-        console.log(dateOrder);
-        sortingHandler(priorityOrder, dateOrder);
     }
 
     const dateOrderChangeHandler = (event) => {
         setDateOrder(event.target.value);
-        console.log(priorityOrder);
-        console.log(dateOrder);
-        sortingHandler(priorityOrder, dateOrder);
     }
 
     const sortingHandler = (priorityOrder, dateOrder) => {
-        props.sortElements(props.toDoItems, priorityOrder, dateOrder);
+        props.changeSortingParameters(priorityOrder, dateOrder);
     }
 
     const closeForm = () => {
@@ -90,14 +83,14 @@ function ToDo(props) {
                         </div>
                         <div className='head-priority'>
                             <select className='priority-select' value={priorityOrder} onChange={priorityOrderChangeHandler}>
-                                <option defaultChecked value="no">Priority</option>
-                                <option value={"asc"}>Priority ⬆</option>
+                                <option defaultChecked value="default">Priority</option>
+                                <option value="asc">Priority ⬆</option>
                                 <option value="desc">Priority ⬇</option>
                             </select>
                         </div>
                         <div className='head-due-date'>
                             <select className='due-date-select' value={dateOrder} onChange={dateOrderChangeHandler}>
-                                <option defaultChecked value="no">Due date</option>
+                                <option value="default">Due date</option>
                                 <option value="asc">Due date ⬆</option>
                                 <option value="desc">Due date ⬇</option>
                             </select>
@@ -107,12 +100,12 @@ function ToDo(props) {
                         </div>
                     </div>
                     {props.toDoItems.map((toDo) => (
-                        <li key={toDo.id} className='list-container'>
+                        <li key={toDo.id} className={toDo.daysToComplete === 0 ? "list-container-no-background" : (toDo.daysToComplete <= 7 && toDo.daysToComplete > 0 ? "list-container-red" : (toDo.daysToComplete <= 14 && toDo.daysToComplete > 7 ? "list-container-yellow" : (toDo.daysToComplete > 14 ? "list-container-green" : "list-container-no-background")))}>
                         <div className='head-name'>
                             <div className='head-checkbox'>
                                 <Checkbox id={toDo.id} status={toDo.doneUndoneFlag} onChangeStatus={changeStatusHandler}></Checkbox>
                             </div>
-                            <p>{toDo.name}</p>
+                            <p className={toDo.doneUndoneFlag ? "name-done" : "name-undone"}>{toDo.name}</p>
                         </div>
                         <div className='head-priority'>
                             <p>{toDo.priority}</p>
@@ -128,12 +121,7 @@ function ToDo(props) {
                     ))}
                 </div>
                 <div className='pagination-container'>
-                    <a href='google.com'>1</a>
-                    <a href='google.com' className="active">2</a>
-                    <a href='google.com'>3</a>
-                    <a href='google.com'>4</a>
-                    <a href='google.com'>5</a>
-                    <a href='google.com'>6</a>
+                    <Pagination currentPage={props.currentPage} totalItems={props.totalItems} changePageHandler={props.changePageHandler} numberOfPages={props.numberOfPages}></Pagination>
                 </div>
             </div>
         </div>
